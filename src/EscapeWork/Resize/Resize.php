@@ -2,6 +2,8 @@
 namespace EscapeWork\Resize;
 
 use ResizeException;
+use SizeAjust;
+use Redimensiona;
 
 class Resize
 {
@@ -55,6 +57,11 @@ class Resize
 
         return $this;
     }
+
+    public function getPicture()
+    {
+        return $this->picture;
+    }
     
     public function getWidth()
     {
@@ -71,78 +78,53 @@ class Resize
     /**
      * Ajustando o tamanho da imagem para não distorcer
      *
-     * @access public
+     * @access private
      * @return void
      */ 
-    public function ajust()
+    private function ajust()
     {
-        $largura = $this->width;
-        $altura  = $this->height;
-        $w       = $this->originalWidth;
-        $h       = $this->originalHeight;
+        $sizeAjust = new SizeAjust()
+        $sizes = $sizeAjust->setOriginalWidth( $this->originalWidth )
+                  ->setOriginalHeight( $this->originalHeight )
+                  ->setWidth( $this->getWidth() )
+                  ->setHeight( $this->getHeight() )
+                  ->ajust();
         
-        # altura === largura 
-        if ($h == $w) { 
-            if ($w > $largura) { 
-                $nw = $largura;  $nh = ($h * $largura)/$w; 
+        $this->setWidth( $sizes['width'] );
+        $this->setHeight( $sizes['height'] );
 
-                if ($nh > $altura) { 
-                    $nh = $altura; $nw = ($w * $altura)/$h; 
-                } 
-            } else if ($h > $altura) { 
-                    $nh = $altura; $nw = ($w * $altura)/$h; 
-            } else { 
-                    $nw = $w; $nh = $h; 
-            } 
-        } 
-
-        # largura maior que altura 
-        if ($w > $h) { 
-            if ($w > $largura) { 
-                $nw = $largura; $nh = ($h * $largura)/$w; 
-
-                if ($nh > $altura) { 
-                    $nh = $altura; $nw = ($w * $altura)/$h; 
-                } 
-            } else { 
-                $nw = $w; $nh = $h; 
-
-                if ($nh > $altura) { 
-                    $nh = $altura; $nw = ($w * $altura)/$h; 
-                } 
-            } 
-        } 
-
-        # altura maior que largura 
-        if ($h > $w) { 
-            if ($h > $altura) { 
-                $nh = $altura; $nw = ($w * $altura)/$h; 
-
-                if ($nw > $largura) { 
-                    $nw = $largura; $nh = ($h * $largura)/$w; 
-                } 
-            } else { 
-                $nh = $h; $nw = $w; 
-
-                if ($nw > $largura) { 
-                    $nw = $largura; $nh = ($h * $largura)/$w; 
-                }
-            } 
-        } 
-        
-        $this->setWidth( $nw );
-        $this->setHeight( $nh );
+        return $this;
     }
     
     
+    /**
+     * Fazendo o redimensionamento e salvando 
+     *
+     * @access public 
+     * @return boolean
+     */
     public function resize()
-    {       
-        
+    {
+        $this->ajust();
+
+        return $this->crop();
     }
     
 
     public function crop()
     {
+        $img = new Redimensiona();
+        $img->carrega( $this->getPicture() );
+        $valida = $img->valida();
+        
+        if( $valida == 'OK' ) 
+        {
+            $img->redimensionar( $this->getWidth(), $this->getHeight(), 'crop');  
+            $img->grava( $this->foto, 100 );
 
+            return true;
+        }
+
+        return false;
     }
 }

@@ -136,6 +136,11 @@ class SizeAjust
 
     private function ajustWidthHigherHeight()
     {
+        $largura = $this->getWidth();
+        $altura  = $this->getHeight();
+        $w       = $this->getOriginalWidth();
+        $h       = $this->getOriginalHeight();
+
         if( $w > $largura ) 
         { 
             $nw = $largura; $nh = ($h * $largura) / $w; 
@@ -154,10 +159,20 @@ class SizeAjust
                 $nh = $altura; $nw = ($w * $altura) / $h; 
             } 
         } 
+
+        return array(
+            'width'  => $nw, 
+            'height' => $nh
+        );
     }
 
     public function ajustHeightHigherWidth()
     {
+        $largura = $this->getWidth();
+        $altura  = $this->getHeight();
+        $w       = $this->getOriginalWidth();
+        $h       = $this->getOriginalHeight();
+
         if( $h > $altura ) 
         { 
             $nh = $altura; $nw = ($w * $altura) / $h; 
@@ -175,6 +190,11 @@ class SizeAjust
             { 
                 $nw = $largura; $nh = ($h * $largura) / $w; 
             }
-        } 
+        }
+
+        return array(
+            'width'  => $nw, 
+            'height' => $nh
+        );
     }
 }

@@ -129,8 +129,44 @@ class SizeAjustTest extends \PHPUnit_Framework_TestCase
                   ->ajust();
 
         $this->assertTrue( is_array( $sizes ) );
-        $this->assertTrue(
-            $sizes['width'] == $sizes['height']
-        );
+        $this->assertEquals( $sizes['width'], $sizes['height'], "Width should be equals than height");
+    }
+
+    public function testWidthHigherThanHeight()
+    {
+        $originalWidth  = 640;
+        $originalHeight = 480;
+        $width          = 200;
+        $height         = 200;
+
+        $sizeAjust = new SizeAjust();
+        $sizes = $sizeAjust->setWidth( $width )
+                  ->setHeight( $height )
+                  ->setOriginalWidth( $originalWidth )
+                  ->setOriginalHeight( $originalHeight )
+                  ->ajust();
+
+        $this->assertTrue( is_array( $sizes ) );
+        $this->assertEquals( $sizes['width'], 200, "Width should be 200");
+        $this->assertEquals( $sizes['height'], 150, "Width should be 150");
+    }
+
+    public function testHeightHigherThanWidth()
+    {
+        $originalWidth  = 480;
+        $originalHeight = 640;
+        $width          = 200;
+        $height         = 200;
+
+        $sizeAjust = new SizeAjust();
+        $sizes = $sizeAjust->setWidth( $width )
+                  ->setHeight( $height )
+                  ->setOriginalWidth( $originalWidth )
+                  ->setOriginalHeight( $originalHeight )
+                  ->ajust();
+
+        $this->assertTrue( is_array( $sizes ) );
+        $this->assertEquals( $sizes['width'], 150, "Width should be 150");
+        $this->assertEquals( $sizes['height'], 200, "Width should be 200");
     }
 }
