@@ -1,4 +1,29 @@
 {
     "name": "EscapeWork/Resize", 
-    "version": "0.1"
+    "description": "Library pra redimensionamentos de imagens", 
+    "version": "0.1", 
+    "type": "library", 
+    "homepage": "", 
+    "license": "CC-BY-NC-3.0", 
+
+    "authors": [
+        {
+            "name": "Luís Dalmolin", 
+            "email": "luis.nh@gmail.com"
+        }
+    ],  
+
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    }, 
+
+    "autoload": {
+        "psr-0": {
+            "EscapeWork\\Resize": "src\/"
+        }
+    }, 
+
+    "config": {
+        "bin-dir": "bin"
+    }
 }

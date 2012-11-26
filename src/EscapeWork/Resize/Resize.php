@@ -24,14 +24,14 @@ class Resize
 
         if( is_file( $this->foto ) ) 
         {
-            $size = getimagesize($pic);
+            $size = getimagesize( $pic );
 
             $this->originalWidth  = $size[0];
             $this->originalHeight = $size[1];
         } 
         else 
         {
-            throw new ResizeException('A imagem inexistente <strong>' . $pic . '</strong> não existe');
+            throw new ResizeException('Imagem <strong>' . $pic . '</strong> não encontrada');
         }
     }
     
