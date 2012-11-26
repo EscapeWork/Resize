@@ -1,5 +1,5 @@
 {
-    "name": "EscapeWork/Resize", 
+    "name": "escapework/resize", 
     "description": "Library pra redimensionamentos de imagens", 
     "version": "0.1", 
     "type": "library", 
@@ -9,7 +9,9 @@
     "authors": [
         {
             "name": "Luís Dalmolin", 
-            "email": "luis.nh@gmail.com"
+            "email": "luis.nh@gmail.com", 
+            "homepage": "http://luisdalmolin.com.br", 
+            "role": "Web Developer"
         }
     ],  
 
@@ -19,7 +21,7 @@
 
     "autoload": {
         "psr-0": {
-            "EscapeWork\\Resize": "src\/"
+            "EscapeWork": "src"
         }
     }, 
 
