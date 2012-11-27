@@ -2,8 +2,8 @@ language:
   php
 
 before_script:
-  "cd tests"
   "composer install --dev"
+  "cd tests"
 
 script:
   "phpunit"
