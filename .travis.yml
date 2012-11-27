@@ -3,6 +3,7 @@ language:
 
 before_script:
   "cd tests"
+  "composer install --dev"
 
 script:
   "phpunit"
