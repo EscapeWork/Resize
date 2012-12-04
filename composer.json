@@ -13,7 +13,7 @@
             "homepage": "http://luisdalmolin.com.br", 
             "role": "Web Developer"
         }
-    ],  
+    ], 
 
     "require-dev": {
         "phpunit/phpunit": "3.7.*"

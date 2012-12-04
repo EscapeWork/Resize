@@ -1,10 +1,6 @@
 <?php 
 namespace EscapeWork\Resize;
 
-use ResizeException;
-use SizeAjust;
-use Redimensiona;
-
 class Resize
 {
 
@@ -22,11 +18,11 @@ class Resize
 
     public function __construct( $picture, $sizes = array() )
     {
-        $this->setPicture( $pic );
+        $this->setPicture( $picture );
 
-        if( is_file( $this->foto ) ) 
+        if( is_file( $this->picture ) ) 
         {
-            $size = getimagesize( $pic );
+            $size = getimagesize( $picture );
 
             $this->originalWidth  = $size[0];
             $this->originalHeight = $size[1];
@@ -83,7 +79,7 @@ class Resize
      */ 
     private function ajust()
     {
-        $sizeAjust = new SizeAjust()
+        $sizeAjust = new SizeAjust();
         $sizes = $sizeAjust->setOriginalWidth( $this->originalWidth )
                   ->setOriginalHeight( $this->originalHeight )
                   ->setWidth( $this->getWidth() )
@@ -111,20 +107,17 @@ class Resize
     }
     
 
+    /**
+     * Cropando a imagem 
+     * 
+     * @return void 
+     */
     public function crop()
     {
-        $img = new Redimensiona();
-        $img->carrega( $this->getPicture() );
-        $valida = $img->valida();
-        
-        if( $valida == 'OK' ) 
-        {
-            $img->redimensionar( $this->getWidth(), $this->getHeight(), 'crop');  
-            $img->grava( $this->foto, 100 );
+        $img = new Canvas();
 
-            return true;
-        }
-
-        return false;
+        $img->carrega( $this->getPicture() )
+            ->redimensiona( $this->getWidth(), $this->getHeight(), 'crop' )
+            ->grava( $this->getPicture() );
     }
 }
