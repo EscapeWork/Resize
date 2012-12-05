@@ -21,7 +21,7 @@ class Upload
         $this->copy( $original, $newFile );
     }
 
-    public function copy( $original, $newFile )
+    private function copy( $original, $newFile )
     {
         if( !copy( $original, $newFile ) )
         {
