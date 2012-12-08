@@ -10,4 +10,12 @@ class UploadTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue( class_exists('EscapeWork\Resize\Upload') );
     }
+
+    /**
+     * @expectedException EscapeWork\Resize\UploadException
+     */
+    public function testInstantiate()
+    {
+        $upload = new Upload(null, null);
+    }
 }

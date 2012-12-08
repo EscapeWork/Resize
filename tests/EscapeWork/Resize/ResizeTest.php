@@ -10,4 +10,12 @@ class ResizeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue( class_exists('EscapeWork\Resize\Resize') );
     }
+
+    /**
+     * @expectedException EscapeWork\Resize\ResizeException
+     */
+    public function testInstantiate()
+    {
+        $resize = new Resize(null, array());
+    }
 }

@@ -4,9 +4,6 @@ namespace EscapeWork\Resize;
 class Resize
 {
 
-    /**
-     * Variaveis de controle
-     */
     public
         $picture, 
         $upload, 
@@ -29,7 +26,7 @@ class Resize
         } 
         else 
         {
-            throw new ResizeException('Imagem <strong>' . $pic . '</strong> não encontrada');
+            throw new ResizeException('Imagem <strong>' . $this->picture . '</strong> não encontrada');
         }
     }
     

@@ -1,11 +1,4 @@
 <?php 
-/**
- * Classe pra fazer upload 
- *
- * @author  Luís Dalmolin <luis.nh@gmail.com>
- * @package EscapeWork\Resize
- */ 
- 
 namespace EscapeWork\Resize;
 
 class Upload
@@ -15,7 +8,7 @@ class Upload
     {
         if( !is_file( $original ) )
         {
-            throw new Exception("File not found -> " . $original);
+            throw new UploadException("File not found -> " . $original);
         }
 
         $this->copy( $original, $newFile );
