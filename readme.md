@@ -13,3 +13,7 @@ $resize = new Resize('/caminho/para/imagem');
 $resize->setWidth(200)->setHeight(100)->resize();
 $resize->setWidth(90)->setHeight(90)->crop();
 ```
+
+### Instalação 
+
+A instalação está disponível via [Composer](https://packagist.org/packages/escapework/resize). Autoload compátivel com a PSR-0.
