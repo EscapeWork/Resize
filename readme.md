@@ -1,8 +1,6 @@
 # EscapeWork\Resize [![Build Status](https://secure.travis-ci.org/EscapeWork/Resize.png)](http://travis-ci.org/EscapeWork/Resize)
 
-Componente que faz uma abstração da classe `canvas` para fazer manipulações com imagens.
-
-A Classe Canvas foi criado pelo [Davi Ferreira](https://github.com/daviferreira/canvas).
+Componente que faz uma abstração da library [Imagine](https://github.com/avalanche123/Imagine) para fazer manipulações com imagens.
 
 ### Exemplos 
 
@@ -10,8 +8,8 @@ A Classe Canvas foi criado pelo [Davi Ferreira](https://github.com/daviferreira/
 use EscapeWork\Resize;
 
 $resize = new Resize('/caminho/para/imagem');
-$resize->setWidth(200)->setHeight(100)->resize();
-$resize->setWidth(90)->setHeight(90)->crop();
+$resize->setWidth(200)->setHeight(100)->resize(); # ajusta o tamanho automáticamente
+$resize->setWidth(90)->setHeight(90)->crop();     # crop exatamente 90x90, podendo cortar partes da imagem
 ```
 
 ### Instalação 

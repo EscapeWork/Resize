@@ -1,5 +1,7 @@
-<?php 
-namespace EscapeWork\Resize;
+<?php namespace EscapeWork\Resize;
+
+use Imagine\Gd\Imagine;
+use Imagine\Image\Box;
 
 class Resize
 {
@@ -11,6 +13,11 @@ class Resize
         $height = 480, 
         $originalWidth, 
         $originalHeight;
+
+    /**
+     * Accepted images 
+     */
+    protected $acceptedImages = array('image/jpg', 'image/jpeg', 'image/pjpg', 'image/pjpeg', 'image/png');
     
 
     public function __construct( $picture, $sizes = array() )
@@ -111,10 +118,9 @@ class Resize
      */
     public function crop()
     {
-        $img = new Canvas();
-
-        $img->carrega( $this->getPicture() )
-            ->redimensiona( $this->getWidth(), $this->getHeight(), 'crop' )
-            ->grava( $this->getPicture() );
+        $imagine = new Imagine();
+        $imagine->open( $this->getPicture() )
+                ->resize( new Box( $this->getWidth(), $this->getHeight() ) )
+                ->save( $this->getPicture() );
     }
 }
