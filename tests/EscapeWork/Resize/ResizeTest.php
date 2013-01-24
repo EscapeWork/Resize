@@ -21,6 +21,22 @@ class ResizeTest extends \PHPUnit_Framework_TestCase
         $resize = new Resize(null, array());
     }
 
+    public function testSetWidthShouldWork()
+    {
+        $resize = new Resize( static::$dir . 'test-image.jpg' );
+        $resize->setWidth(200);
+
+        $this->assertEquals( 200, $resize->getWidth() );
+    }
+
+    public function testSetHeightShouldWork()
+    {
+        $resize = new Resize( static::$dir . 'test-image.jpg' );
+        $resize->setHeight(200);
+
+        $this->assertEquals( 200, $resize->getHeight() );
+    }
+
     public function testCropImage()
     {
         $newImg = static::$dir . 'test-image-crop.jpg';
@@ -29,13 +45,13 @@ class ResizeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue( is_file( $newImg ) );
 
         $resize = new Resize( $newImg );
-        $resize->setWidth(200)->setHeight(200)->crop();
+        $resize->setWidth(320)->setHeight(200)->crop();
 
         $this->assertTrue( is_file( $newImg ) );
 
         $size = getimagesize( $newImg );
 
-        $this->assertEquals( 200, $size[0] );
+        $this->assertEquals( 320, $size[0] );
         $this->assertEquals( 200, $size[1] );
 
         unlink( $newImg );

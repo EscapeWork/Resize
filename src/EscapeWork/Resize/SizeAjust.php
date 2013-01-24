@@ -1,7 +1,7 @@
 <?php 
 namespace EscapeWork\Resize;
 
-class SizeAjust
+class SizeAjust implements Ajustable
 {
 
     public
@@ -143,11 +143,13 @@ class SizeAjust
 
         if( $w > $largura ) 
         { 
-            $nw = $largura; $nh = ($h * $largura) / $w; 
+            $nw = $largura; 
+            $nh = ($h * $largura) / $w; 
 
             if( $nh > $altura ) 
             { 
-                $nh = $altura; $nw = ($w * $altura) / $h; 
+                $nh = $altura; 
+                $nw = ($w * $altura) / $h;
             } 
         } 
         else 
@@ -156,7 +158,8 @@ class SizeAjust
 
             if( $nh > $altura ) 
             { 
-                $nh = $altura; $nw = ($w * $altura) / $h; 
+                $nh = $altura; 
+                $nw = ($w * $altura) / $h; 
             } 
         } 
 

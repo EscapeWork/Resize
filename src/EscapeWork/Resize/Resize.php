@@ -2,17 +2,19 @@
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
+use Imagine\Image\Point;
 
 class Resize
 {
 
     public
         $picture, 
-        $upload, 
         $width  = 640, 
         $height = 480, 
         $originalWidth, 
-        $originalHeight;
+        $originalHeight, 
+        $cropCordinates = array(), 
+        $quality = 100;
 
     /**
      * Accepted images 
@@ -46,14 +48,21 @@ class Resize
 
     public function setWidth( $width ) 
     {
-        $this->width = $width;
+        $this->width = (int) $width;
 
         return $this;
     }
 
     public function setHeight( $height ) 
     {
-        $this->height = $height;  
+        $this->height = (int) $height;  
+
+        return $this;
+    }
+
+    public function setQuality( $quality )
+    {
+        $this->quality = (int) $quality;
 
         return $this;
     }
@@ -72,6 +81,11 @@ class Resize
     {
         return $this->height;
     }
+
+    public function getQuality()
+    {
+        return $this->quality;
+    }
      
      
     
@@ -81,9 +95,8 @@ class Resize
      * @access private
      * @return void
      */ 
-    private function ajust()
+    private function ajust( Ajustable $sizeAjust )
     {
-        $sizeAjust = new SizeAjust();
         $sizes = $sizeAjust->setOriginalWidth( $this->originalWidth )
                   ->setOriginalHeight( $this->originalHeight )
                   ->setWidth( $this->getWidth() )
@@ -98,16 +111,16 @@ class Resize
     
     
     /**
-     * Fazendo o redimensionamento e salvando 
+     * Fazendo o redimensionamento e salvando (proporcional)
      *
      * @access public 
-     * @return boolean
+     * @return void
      */
     public function resize()
     {
-        $this->ajust();
+        $this->ajust( new SizeAjust() );
 
-        return $this->crop();
+        $this->execute();
     }
     
 
@@ -118,9 +131,91 @@ class Resize
      */
     public function crop()
     {
+        $sizes = array(
+            'width'  => $this->getWidth(), 
+            'height' => $this->getHeight(), 
+        );
+
+        $this->ajust( new SizeAjustCrop() );
+        $this->execute();
+
+        $this->setCropCordinates( $sizes );
+
+        $this->setWidth( $sizes['width'] );
+        $this->setHeight( $sizes['height'] );
+
+        $this->cropImage();
+    }
+
+
+    /**
+     * Setando as cordenadas do crop para deixar a imagem do tamanho exato 
+     *
+     * @access  public 
+     * @param   array  $sizes
+     * @return  void
+     */
+    public function setCropCordinates( array $sizes )
+    {
+        if( $this->getWidth() > $sizes['width'] )
+        {
+            $widthLeft = ( $this->getWidth() - $sizes['width'] ) / 2;
+
+            $this->cropCordinates['x'] = $widthLeft;
+            $this->cropCordinates['y'] = 0;
+
+            $this->setWidth( $sizes['width'] );
+        }
+        elseif( $this->getHeight() > $sizes['height'] )
+        {
+            $heightLeft = ( $this->getHeight() - $sizes['height'] ) / 2;
+
+            $this->cropCordinates['x'] = 0;
+            $this->cropCordinates['y'] = $heightLeft;
+
+            $this->setHeight( $sizes['height'] );
+        }
+        else
+        {
+            $this->cropCordinates['x'] = 0;
+            $this->cropCordinates['y'] = 0;
+        }
+    }
+
+
+    /**
+     * Cropando a imagem 
+     *
+     * @access  private 
+     * @return  void
+     */
+    private function cropImage()
+    {
+        $imagine = new Imagine();
+        $imagine->open( $this->getPicture() )
+                ->crop( 
+                    new Point( $this->cropCordinates['x'], $this->cropCordinates['y'] ), 
+                    new Box( $this->getWidth(), $this->getHeight() ) 
+                )
+                ->save( $this->getPicture(), array(
+                    'quality' => $this->getQuality()
+                ) );
+    }
+
+
+    /**
+     * Executando o redimensionamento
+     *
+     * @access  private
+     * @return  void
+     */
+    private function execute()
+    {
         $imagine = new Imagine();
         $imagine->open( $this->getPicture() )
                 ->resize( new Box( $this->getWidth(), $this->getHeight() ) )
-                ->save( $this->getPicture() );
+                ->save( $this->getPicture(), array(
+                    'quality' => $this->getQuality()
+                ) );
     }
 }
