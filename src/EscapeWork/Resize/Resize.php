@@ -22,7 +22,7 @@ class Resize
     protected $acceptedImages = array('image/jpg', 'image/jpeg', 'image/pjpg', 'image/pjpeg', 'image/png');
     
 
-    public function __construct( $picture, $sizes = array() )
+    public function __construct( $picture, $width = null, $height = null )
     {
         $this->setPicture( $picture );
 
@@ -36,6 +36,16 @@ class Resize
         else 
         {
             throw new ResizeException('Imagem <strong>' . $this->picture . '</strong> não encontrada');
+        }
+
+        if( !is_null( $width ) )
+        {
+            $this->setWidth( $width );
+        }
+
+        if( !is_null( $height ) )
+        {
+            $this->setHeight( $height );
         }
     }
     

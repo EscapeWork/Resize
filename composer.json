@@ -2,8 +2,7 @@
     "name": "escapework/resize", 
     "description": "Library pra redimensionamentos de imagens", 
     "type": "library", 
-    "homepage": "", 
-    "license": "CC-BY-NC-3.0", 
+    "license": "MIT", 
 
     "authors": [
         {

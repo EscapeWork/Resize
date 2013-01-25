@@ -21,6 +21,21 @@ class ResizeTest extends \PHPUnit_Framework_TestCase
         $resize = new Resize(null, array());
     }
 
+    public function testSetWidthAndHeightByConstructorShouldWork()
+    {
+        $resize = new Resize( static::$dir . 'test-image.jpg', 200, 200 );
+
+        $this->assertEquals( 200, $resize->getWidth() );
+        $this->assertEquals( 200, $resize->getHeight() );
+    }
+
+    public function testSetWidthByConstructorShouldWork()
+    {
+        $resize = new Resize( static::$dir . 'test-image.jpg', 200 );
+
+        $this->assertEquals( 200, $resize->getWidth() );
+    }
+
     public function testSetWidthShouldWork()
     {
         $resize = new Resize( static::$dir . 'test-image.jpg' );
