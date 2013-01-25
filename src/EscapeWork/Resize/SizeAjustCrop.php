@@ -90,10 +90,20 @@ class SizeAjustCrop implements Ajustable
         if( $width > $height )
         {
             $sizes = $this->ajustWidthHigherHeight();
+
+            if( $sizes['width'] < $this->getWidth() || $sizes['height'] < $this->getHeight() )
+            {
+                $sizes = $this->ajustHeightHigherWidth();
+            }
         }
         elseif( $height > $width )
         {
-            $sizes = $this->ajustHeightHigherWidth();   
+            $sizes = $this->ajustHeightHigherWidth();
+
+            if( $sizes['width'] < $this->getWidth() || $sizes['height'] < $this->getHeight() )
+            {
+                $sizes = $this->ajustWidthHigherHeight();
+            }
         }
         else
         {

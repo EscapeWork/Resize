@@ -52,7 +52,7 @@ class ResizeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( 200, $resize->getHeight() );
     }
 
-    public function testCropImage()
+    public function testCropImageShouldWork()
     {
         $newImg = static::$dir . 'test-image-crop.jpg';
         $upload = new Upload( static::$dir . 'test-image.jpg', $newImg );
