@@ -18,7 +18,7 @@ class Upload
     {
         if( !copy( $original, $newFile ) )
         {
-            throw new Exception("Error copying file -> " . $original);
+            throw new UploadException("Error copying file -> " . $original);
         }
     }
 }
