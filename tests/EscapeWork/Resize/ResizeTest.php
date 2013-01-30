@@ -93,4 +93,41 @@ class ResizeTest extends \PHPUnit_Framework_TestCase
         unlink( $newImg );
         $this->assertFalse( is_file( $newImg ) );
     }
+
+    public function testResizeByStaticFunctionShouldWork()
+    {
+        $img      = 'test-image.jpg';
+        $original = static::$dir . $img;
+        $sizes    = array(
+            'mini-' => array(
+                'width'  => 80, 
+                'height' => 80, 
+                'crop'   => true
+            ), 
+            'thumb-' => array(
+                'width'  => 150, 
+                'height' => 100, 
+                'crop'   => false
+            ), 
+            'vga-' => array(
+                'width'  => 640, 
+                'height' => 480, 
+                'crop'   => false
+            ), 
+        );
+
+        Resize::make( static::$dir, $img, $sizes );
+
+        $this->assertTrue( file_exists( static::$dir . 'mini-' . $img ) );
+        $this->assertTrue( file_exists( static::$dir . 'thumb-' . $img ) );
+        $this->assertTrue( file_exists( static::$dir . 'vga-' . $img ) );
+        
+        unlink( static::$dir . 'mini-' . $img );
+        unlink( static::$dir . 'thumb-' . $img );
+        unlink( static::$dir . 'vga-' . $img );
+
+        $this->assertFalse( file_exists( static::$dir . 'mini-' . $img ) );
+        $this->assertFalse( file_exists( static::$dir . 'thumb-' . $img ) );
+        $this->assertFalse( file_exists( static::$dir . 'vga-' . $img ) );
+    }
 }

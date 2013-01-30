@@ -228,4 +228,48 @@ class Resize
                     'quality' => $this->getQuality()
                 ) );
     }
+
+
+    /**
+     * Fazendo upload e redimensionando imagens a partir de uma fixa e um array de tamanhos 
+     * 
+     * @param  string  $directory [diretório da imagem original]
+     * @param  string  $img       [nome da imagem original]
+     * @param  array   $sizes     [array com os tamanhos e prefixos para redimensionamentos]
+     * @return boolean 
+     */
+    public static function make( $directory, $img, array $sizes )
+    {
+        foreach( $sizes as $prefix => $size )
+        {
+            try
+            {
+                $newImg = $directory . $prefix . $img;
+
+                $upload = new Upload( 
+                    $directory . $img, 
+                    $newImg  
+                );
+
+                $resize = new Resize( $newImg, $size['width'], $size['height'] );
+
+                if( $size['crop'] === true )
+                {
+                    $resize->crop();
+                }
+                else
+                {
+                    $resize->resize();
+                }
+            }
+            catch( UploadException $e )
+            {
+
+            }
+            catch( ResizeException $e )
+            {
+
+            }
+        }
+    }
 }
