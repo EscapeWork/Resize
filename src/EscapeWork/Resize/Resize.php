@@ -253,7 +253,7 @@ class Resize
 
                 $resize = new Resize( $newImg, $size['width'], $size['height'] );
 
-                if( $size['crop'] === true )
+                if( isset( $size['crop'] ) && $size['crop'] === true )
                 {
                     $resize->crop();
                 }
