@@ -7,6 +7,9 @@ use Imagine\Image\Point;
 class Resize
 {
 
+    /**
+     * Object variables
+     */
     public
         $picture, 
         $width  = 640, 
@@ -21,7 +24,6 @@ class Resize
      */
     protected $acceptedImages = array('image/jpg', 'image/jpeg', 'image/pjpg', 'image/pjpeg', 'image/png');
     
-
     public function __construct( $picture, $width = null, $height = null )
     {
         $this->setPicture( $picture );
@@ -96,8 +98,6 @@ class Resize
     {
         return $this->quality;
     }
-     
-     
     
     /**
      * Ajustando o tamanho da imagem para não distorcer
@@ -119,7 +119,6 @@ class Resize
         return $this;
     }
     
-    
     /**
      * Fazendo o redimensionamento e salvando (proporcional)
      *
@@ -132,7 +131,6 @@ class Resize
 
         $this->execute();
     }
-    
 
     /**
      * Cropando a imagem 
@@ -156,7 +154,6 @@ class Resize
 
         $this->cropImage();
     }
-
 
     /**
      * Setando as cordenadas do crop para deixar a imagem do tamanho exato 
@@ -192,7 +189,6 @@ class Resize
         }
     }
 
-
     /**
      * Cropando a imagem 
      *
@@ -212,7 +208,6 @@ class Resize
                 ) );
     }
 
-
     /**
      * Executando o redimensionamento
      *
@@ -228,7 +223,6 @@ class Resize
                     'quality' => $this->getQuality()
                 ) );
     }
-
 
     /**
      * Fazendo upload e redimensionando imagens a partir de uma fixa e um array de tamanhos 
@@ -271,5 +265,51 @@ class Resize
 
             }
         }
+    }
+
+    /**
+     * Helper function to format the name removing special characters, accents e white spaces
+     *
+     * @static
+     * @access  public 
+     * @param   string $string
+     * @return  string
+     */
+    public static function formatString($string, $encode = 'UTF-8')
+    {
+        $accents = array(
+            'a' => '/&Agrave;|&Aacute;|&Acirc;|&Atilde;|&Auml;|&Aring;/',
+            'a' => '/&agrave;|&aacute;|&acirc;|&atilde;|&auml;|&aring;/',
+            'c' => '/&Ccedil;/',
+            'c' => '/&ccedil;/',
+            'e' => '/&Egrave;|&Eacute;|&Ecirc;|&Euml;/',
+            'e' => '/&egrave;|&eacute;|&ecirc;|&euml;/',
+            'i' => '/&Igrave;|&Iacute;|&Icirc;|&Iuml;/',
+            'i' => '/&igrave;|&iacute;|&icirc;|&iuml;/',
+            'n' => '/&Ntilde;/',
+            'n' => '/&ntilde;/',
+            'o' => '/&Ograve;|&Oacute;|&Ocirc;|&Otilde;|&Ouml;/',
+            'o' => '/&ograve;|&oacute;|&ocirc;|&otilde;|&ouml;/',
+            'u' => '/&Ugrave;|&Uacute;|&Ucirc;|&Uuml;/',
+            'u' => '/&ugrave;|&uacute;|&ucirc;|&uuml;/',
+            'y' => '/&Yacute;|&Yuml;/',
+            'y' => '/&yacute;|&yuml;/'
+        );
+
+        $specials = array('/', '\\', '|', '*', ':', '[', ']', '{', '}', "'", '"', ',', '%', '@', '&', '(', ')', '¬', '#', '!', '?', 'ª', 'º', '¨', '°');
+        
+        $string = str_replace($specials, '', $string);
+        $string = preg_replace($accents, array_keys($accents), htmlentities($string, ENT_NOQUOTES, $encode));
+
+        $string = trim( $string );
+
+        $string = str_replace(' ', '-', $string);
+        $string = str_replace('---', '-', str_replace(' ', '-', $string));
+        $string = str_replace('_', '-', str_replace('--', '-', $string));
+        $string = strtolower($string);
+
+        $string = preg_replace($acentos, array_keys($acentos), $string);
+
+        return $string;
     }
 }

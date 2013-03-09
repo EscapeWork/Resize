@@ -1,5 +1,4 @@
-<?php 
-namespace EscapeWork\Resize;
+<?php namespace EscapeWork\Resize;
 
 class SizeAjustCrop implements Ajustable
 {
