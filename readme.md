@@ -53,3 +53,11 @@ Resize::make( $dir, $img, $sizes );
 ### Instalação 
 
 A instalação está disponível via [Composer](https://packagist.org/packages/escapework/resize). Autoload compátivel com a PSR-0.
+
+```
+{
+    "require": {
+        "escapework/resize": "0.4.*"
+    }
+}
+}
