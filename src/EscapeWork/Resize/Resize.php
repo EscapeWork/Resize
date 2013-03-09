@@ -308,7 +308,7 @@ class Resize
         $string = str_replace('_', '-', str_replace('--', '-', $string));
         $string = strtolower($string);
 
-        $string = preg_replace($acentos, array_keys($acentos), $string);
+        $string = preg_replace($accents, array_keys($accents), $string);
 
         return $string;
     }

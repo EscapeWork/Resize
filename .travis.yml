@@ -10,4 +10,4 @@ before_script:
   - "php composer.phar install"
 
 script:
-  - "bin/phpunit tests"
+  - "phpunit tests"
