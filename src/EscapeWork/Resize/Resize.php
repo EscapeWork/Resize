@@ -147,7 +147,7 @@ class Resize
         } else {
         	$this->ajust(new SizeAjustMinimum(
         		$this->getMinWidth(), 
-        		$this->getMinHeight(), 
+        		$this->getMinHeight()
         	));
         }
 
