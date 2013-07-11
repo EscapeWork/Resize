@@ -24,59 +24,64 @@ class Resize
      */
     protected $acceptedImages = array('image/jpg', 'image/jpeg', 'image/pjpg', 'image/pjpeg', 'image/png');
     
-    public function __construct( $picture, $width = null, $height = null )
+    public function __construct($picture, $width = null, $height = null)
     {
-        $this->setPicture( $picture );
+        $this->setPicture($picture);
 
-        if( is_file( $this->picture ) ) 
-        {
-            $size = getimagesize( $picture );
+        if (is_file($this->picture)) {
+            $size = getimagesize($picture);
 
             $this->originalWidth  = $size[0];
             $this->originalHeight = $size[1];
-        } 
-        else 
-        {
+        } else {
             throw new ResizeException('Imagem <strong>' . $this->picture . '</strong> não encontrada');
         }
 
-        if( !is_null( $width ) )
-        {
-            $this->setWidth( $width );
+        if (! is_null($width)) {
+            $this->setWidth($width);
         }
 
-        if( !is_null( $height ) )
-        {
-            $this->setHeight( $height );
+        if (! is_null($height)){
+            $this->setHeight($height);
         }
     }
     
-    public function setPicture( $picture ) 
+    public function setPicture($picture) 
     {
         $this->picture = $picture;
 
         return $this;
     }
 
-    public function setWidth( $width ) 
+    public function setWidth($width)
     {
         $this->width = (int) $width;
 
         return $this;
     }
 
-    public function setHeight( $height ) 
+    public function setHeight($height)
     {
         $this->height = (int) $height;  
 
         return $this;
     }
 
-    public function setQuality( $quality )
+    public function setQuality($quality)
     {
         $this->quality = (int) $quality;
 
         return $this;
+    }
+
+    public function setX($x)
+    {
+    	$this->cropCordinates['x'] = $x;
+    }
+
+    public function setY($y)
+    {
+    	$this->cropCordinates['y'] = $y;
     }
 
     public function getPicture()
@@ -105,16 +110,16 @@ class Resize
      * @access private
      * @return void
      */ 
-    private function ajust( Ajustable $sizeAjust )
+    private function ajust(Ajustable $sizeAjust)
     {
-        $sizes = $sizeAjust->setOriginalWidth( $this->originalWidth )
-                  ->setOriginalHeight( $this->originalHeight )
-                  ->setWidth( $this->getWidth() )
-                  ->setHeight( $this->getHeight() )
+        $sizes = $sizeAjust->setOriginalWidth($this->originalWidth)
+                  ->setOriginalHeight($this->originalHeight)
+                  ->setWidth($this->getWidth() )
+                  ->setHeight($this->getHeight())
                   ->ajust();
         
-        $this->setWidth( $sizes['width'] );
-        $this->setHeight( $sizes['height'] );
+        $this->setWidth($sizes['width']);
+        $this->setHeight($sizes['height']);
 
         return $this;
     }
@@ -127,7 +132,7 @@ class Resize
      */
     public function resize()
     {
-        $this->ajust( new SizeAjust() );
+        $this->ajust(new SizeAjust());
 
         $this->execute();
     }
@@ -144,13 +149,13 @@ class Resize
             'height' => $this->getHeight(), 
         );
 
-        $this->ajust( new SizeAjustCrop() );
+        $this->ajust(new SizeAjustCrop());
         $this->execute();
 
-        $this->setCropCordinates( $sizes );
+        $this->setCropCordinates($sizes);
 
-        $this->setWidth( $sizes['width'] );
-        $this->setHeight( $sizes['height'] );
+        $this->setWidth($sizes['width']);
+        $this->setHeight($sizes['height']);
 
         $this->cropImage();
     }
@@ -162,31 +167,38 @@ class Resize
      * @param   array  $sizes
      * @return  void
      */
-    public function setCropCordinates( array $sizes )
+    public function setCropCordinates(array $sizes)
     {
-        if( $this->getWidth() > $sizes['width'] )
-        {
+        if ($this->cordinatesAlreadySetted()) {
+        	return;
+        }
+
+        if ($this->getWidth() > $sizes['width']) {
             $widthLeft = ( $this->getWidth() - $sizes['width'] ) / 2;
 
             $this->cropCordinates['x'] = $widthLeft;
             $this->cropCordinates['y'] = 0;
 
             $this->setWidth( $sizes['width'] );
-        }
-        elseif( $this->getHeight() > $sizes['height'] )
-        {
+        } elseif($this->getHeight() > $sizes['height']) {
             $heightLeft = ( $this->getHeight() - $sizes['height'] ) / 2;
 
             $this->cropCordinates['x'] = 0;
             $this->cropCordinates['y'] = $heightLeft;
 
             $this->setHeight( $sizes['height'] );
-        }
-        else
-        {
+        } else {
             $this->cropCordinates['x'] = 0;
             $this->cropCordinates['y'] = 0;
         }
+    }
+
+    /**
+     * Checking if the coordinates are already setted
+     */
+    public function cordinatesAlreadySetted()
+    {
+    	return isset($this->cropCordinates['x']) && isset($this->cropCordinates['y']);
     }
 
     /**
@@ -198,14 +210,14 @@ class Resize
     private function cropImage()
     {
         $imagine = new Imagine();
-        $imagine->open( $this->getPicture() )
+        $imagine->open($this->getPicture())
                 ->crop( 
                     new Point( $this->cropCordinates['x'], $this->cropCordinates['y'] ), 
                     new Box( $this->getWidth(), $this->getHeight() ) 
                 )
                 ->save( $this->getPicture(), array(
                     'quality' => $this->getQuality()
-                ) );
+                ));
     }
 
     /**
@@ -217,11 +229,11 @@ class Resize
     private function execute()
     {
         $imagine = new Imagine();
-        $imagine->open( $this->getPicture() )
-                ->resize( new Box( $this->getWidth(), $this->getHeight() ) )
-                ->save( $this->getPicture(), array(
+        $imagine->open($this->getPicture())
+                ->resize(new Box($this->getWidth(), $this->getHeight()))
+                ->save($this->getPicture(), array(
                     'quality' => $this->getQuality()
-                ) );
+                ));
     }
 
     /**
@@ -232,12 +244,10 @@ class Resize
      * @param  array   $sizes     [array com os tamanhos e prefixos para redimensionamentos]
      * @return boolean 
      */
-    public static function make( $directory, $img, array $sizes )
+    public static function make($directory, $img, array $sizes)
     {
-        foreach( $sizes as $prefix => $size )
-        {
-            try
-            {
+        foreach ($sizes as $prefix => $size) {
+            try {
                 $newImg = $directory . $prefix . $img;
 
                 $upload = new Upload( 
@@ -245,23 +255,18 @@ class Resize
                     $newImg  
                 );
 
-                $resize = new Resize( $newImg, $size['width'], $size['height'] );
+                $resize = new Resize($newImg, $size['width'], $size['height']);
 
-                if( isset( $size['crop'] ) && $size['crop'] === true )
-                {
+                if (isset($size['crop']) && $size['crop'] === true) {
                     $resize->crop();
-                }
-                else
-                {
+                } else {
                     $resize->resize();
                 }
-            }
-            catch( UploadException $e )
-            {
+            } 
+            catch(UploadException $e) {
 
             }
-            catch( ResizeException $e )
-            {
+            catch (ResizeException $e) {
 
             }
         }

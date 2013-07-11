@@ -130,4 +130,26 @@ class ResizeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse( file_exists( static::$dir . 'thumb-' . $img ) );
         $this->assertFalse( file_exists( static::$dir . 'vga-' . $img ) );
     }
+
+    /**
+     * @testdox Resize::cordinatesAlreadySetted should return true
+     */
+    public function testCordinatesAlreadySettedShouldReturnTrue()
+    {
+    	$resize = new Resize(static::$dir . 'test-image.jpg');
+    	$resize->setX(20);
+    	$resize->setY(30);
+
+    	$this->assertTrue($resize->cordinatesAlreadySetted());
+    }
+
+    /**
+     * @testdox Resize::cordinatesAlreadySetted should return false
+     */
+    public function testCordinatesAlreadySettedShouldReturnFalse()
+    {
+    	$resize = new Resize(static::$dir . 'test-image.jpg');
+
+    	$this->assertFalse($resize->cordinatesAlreadySetted());
+    }
 }

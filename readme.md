@@ -14,10 +14,19 @@ $resize = new Resize('/caminho/para/imagem');
 $resize->setWidth(90)->setHeight(90)->crop(); # redimensiona, e depois cropa exatamente 90x90, podendo cortar algumas partes da imagem
 ```
 
+### Crop a partir de um X e Y definidos
+
+```php
+$resize = new Resize('/path/to/image.jpg');
+$resize->setX(20)->setY(30)->setWidth(300)->setHeight(400)->crop();
+```
+
+### Upload de arquivos
+
 ```php
 use EscapeWork\Resize\Upload;
 
-$upload = new Upload( $original, $newFile );
+$upload = new Upload($original, $newFile);
 ```
 
 #### Upload e redimensionamento a partir de um array 
@@ -57,6 +66,6 @@ A instalação está disponível via [Composer](https://packagist.org/packages/e
 ```
 {
     "require": {
-        "escapework/resize": "0.4.*"
+        "escapework/resize": "0.5.*"
     }
 }
