@@ -93,14 +93,14 @@ class Resize
     	return $this;
     }
 
-    public function getMinWidth($minWidth)
+    public function getMinWidth()
     {
-    	$this->minWidth = $minWidth;
+    	return $this->minWidth;
     }
 
-    public function getMinHeight($minHeight)
+    public function getMinHeight()
     {
-    	$this->minHeight = $minHeight;
+    	return $this->minHeight;
     }
 
     public function getPicture()
