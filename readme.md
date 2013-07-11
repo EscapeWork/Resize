@@ -7,10 +7,10 @@ Componente que faz uma abstração da library [Imagine](https://github.com/avala
 ```php
 use EscapeWork\Resize\Resize;
 
-$resize = new Resize('/caminho/para/imagem');
+$resize = new Resize('/path/to/image.jpg');
 $resize->setWidth(200)->setHeight(100)->resize(); # ajusta o tamanho automáticamente, mantendo no máximo 200px de largura e/ou 100px de altura
 
-$resize = new Resize('/caminho/para/imagem');
+$resize = new Resize('/path/to/image.jpg');
 $resize->setWidth(90)->setHeight(90)->crop(); # redimensiona, e depois cropa exatamente 90x90, podendo cortar algumas partes da imagem
 ```
 
@@ -19,6 +19,19 @@ $resize->setWidth(90)->setHeight(90)->crop(); # redimensiona, e depois cropa exa
 ```php
 $resize = new Resize('/path/to/image.jpg');
 $resize->setX(20)->setY(30)->setWidth(300)->setHeight(400)->crop();
+```
+
+### Minimum Width and Minimum Height
+
+```php
+$resize = new Resize('/path/to/image.jpg');
+$resize->setMinWidth(300)->setMinHeight(500)->resize();
+
+$resize = new Resize('/path/to/other/image.jpg');
+$resize->setMinHeight(549)->resize();
+
+$resize = new Resize('/path/to/another/image.jpg');
+$resize->setMinWidth(300)->resize();
 ```
 
 ### Upload de arquivos

@@ -12,12 +12,19 @@ class Resize
      */
     public
         $picture, 
-        $width  = 640, 
+        $cropCordinates = array(), 
+        $quality = 100;
+
+    /**
+     * Sizes
+     */
+    protected 
+    	$width  = 640, 
         $height = 480, 
         $originalWidth, 
         $originalHeight, 
-        $cropCordinates = array(), 
-        $quality = 100;
+        $minWidth, 
+        $minHeight;
 
     /**
      * Accepted images 
@@ -27,15 +34,7 @@ class Resize
     public function __construct($picture, $width = null, $height = null)
     {
         $this->setPicture($picture);
-
-        if (is_file($this->picture)) {
-            $size = getimagesize($picture);
-
-            $this->originalWidth  = $size[0];
-            $this->originalHeight = $size[1];
-        } else {
-            throw new ResizeException('Imagem <strong>' . $this->picture . '</strong> não encontrada');
-        }
+        $this->setImageSizes();
 
         if (! is_null($width)) {
             $this->setWidth($width);
@@ -82,6 +81,16 @@ class Resize
     public function setY($y)
     {
     	$this->cropCordinates['y'] = $y;
+    }
+
+    public function setMinWidth($minWidth)
+    {
+    	$this->minWidth = $minWidth;
+    }
+
+    public function getMinHeight($minHeight)
+    {
+    	$this->minHeight = $minHeight;
     }
 
     public function getPicture()
@@ -132,7 +141,11 @@ class Resize
      */
     public function resize()
     {
-        $this->ajust(new SizeAjust());
+    	if (is_null($this->minWidth) || is_null($this->minHeight)) {
+        	$this->ajust(new SizeAjust());
+        } else {
+        	$this->ajust(new SizeAjustMinimum());
+        }
 
         $this->execute();
     }
@@ -234,6 +247,23 @@ class Resize
                 ->save($this->getPicture(), array(
                     'quality' => $this->getQuality()
                 ));
+    }
+
+    /**
+     * Setting the image dizes
+     *
+     * @throws ResizeException
+     */
+    public function setImageSizes()
+    {
+    	if (is_file($this->picture)) {
+            $size = getimagesize($this->picture);
+
+            $this->originalWidth  = $size[0];
+            $this->originalHeight = $size[1];
+        } else {
+            throw new ResizeException('Imagem <strong>' . $this->picture . '</strong> não encontrada');
+        }
     }
 
     /**

@@ -89,10 +89,10 @@ class SizeAjustTest extends \PHPUnit_Framework_TestCase
             $originalHeight
         );
 
-        $this->assertEquals( $width, $sizeAjust->getWidth() );
-        $this->assertEquals( $height, $sizeAjust->getHeight() );
-        $this->assertEquals( $originalWidth, $sizeAjust->getOriginalWidth() );
-        $this->assertEquals( $originalHeight, $sizeAjust->getOriginalHeight() );
+        $this->assertEquals($width, $sizeAjust->getWidth());
+        $this->assertEquals($height, $sizeAjust->getHeight());
+        $this->assertEquals($originalWidth, $sizeAjust->getOriginalWidth());
+        $this->assertEquals($originalHeight, $sizeAjust->getOriginalHeight());
     }
 
     public function testSetAttrivutesAllViaNestedFunction()
@@ -103,10 +103,10 @@ class SizeAjustTest extends \PHPUnit_Framework_TestCase
         $height         = 200;
 
         $sizeAjust = new SizeAjust();
-        $sizeAjust->setWidth( $width )
-                  ->setHeight( $height )
-                  ->setOriginalWidth( $originalWidth )
-                  ->setOriginalHeight( $originalHeight );
+        $sizeAjust->setWidth($width)
+                  ->setHeight($height)
+                  ->setOriginalWidth($originalWidth)
+                  ->setOriginalHeight($originalHeight);
 
         $this->assertEquals($width, $sizeAjust->getWidth());
         $this->assertEquals($height, $sizeAjust->getHeight());
@@ -122,14 +122,14 @@ class SizeAjustTest extends \PHPUnit_Framework_TestCase
         $height         = 200;
 
         $sizeAjust = new SizeAjust();
-        $sizes = $sizeAjust->setWidth( $width )
-                  ->setHeight( $height )
-                  ->setOriginalWidth( $originalWidth )
-                  ->setOriginalHeight( $originalHeight )
+        $sizes = $sizeAjust->setWidth($width)
+                  ->setHeight($height)
+                  ->setOriginalWidth($originalWidth)
+                  ->setOriginalHeight($originalHeight)
                   ->ajust();
 
-        $this->assertTrue( is_array( $sizes ) );
-        $this->assertEquals( $sizes['width'], $sizes['height'], "Width should be equals than height");
+        $this->assertTrue(is_array($sizes));
+        $this->assertEquals($sizes['width'], $sizes['height'], "Width should be equals than height");
     }
 
     public function testWidthHigherThanHeight()
@@ -140,10 +140,10 @@ class SizeAjustTest extends \PHPUnit_Framework_TestCase
         $height         = 200;
 
         $sizeAjust = new SizeAjust();
-        $sizes = $sizeAjust->setWidth( $width )
-                  ->setHeight( $height )
-                  ->setOriginalWidth( $originalWidth )
-                  ->setOriginalHeight( $originalHeight )
+        $sizes = $sizeAjust->setWidth($width)
+                  ->setHeight($height)
+                  ->setOriginalWidth($originalWidth)
+                  ->setOriginalHeight($originalHeight)
                   ->ajust();
 
         $this->assertTrue( is_array( $sizes ) );
@@ -151,6 +151,9 @@ class SizeAjustTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals( $sizes['height'], 150, "Width should be 150");
     }
 
+    /**
+     * @testdox SizeAjust::ajustHeightHigherWidth
+     */
     public function testHeightHigherThanWidth()
     {
         $originalWidth  = 480;
@@ -159,14 +162,14 @@ class SizeAjustTest extends \PHPUnit_Framework_TestCase
         $height         = 200;
 
         $sizeAjust = new SizeAjust();
-        $sizes = $sizeAjust->setWidth( $width )
-                  ->setHeight( $height )
-                  ->setOriginalWidth( $originalWidth )
-                  ->setOriginalHeight( $originalHeight )
+        $sizes = $sizeAjust->setWidth($width)
+                  ->setHeight($height)
+                  ->setOriginalWidth($originalWidth)
+                  ->setOriginalHeight($originalHeight)
                   ->ajust();
 
-        $this->assertTrue( is_array( $sizes ) );
-        $this->assertEquals( $sizes['width'], 150, "Width should be 150");
-        $this->assertEquals( $sizes['height'], 200, "Width should be 200");
+        $this->assertTrue(is_array($sizes));
+        $this->assertEquals($sizes['width'], 150, "Width should be 150");
+        $this->assertEquals($sizes['height'], 200, "Width should be 200");
     }
 }
