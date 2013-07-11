@@ -48,42 +48,52 @@ class Resize
     public function setPicture($picture) 
     {
         $this->picture = $picture;
-
         return $this;
     }
 
     public function setWidth($width)
     {
         $this->width = (int) $width;
-
         return $this;
     }
 
     public function setHeight($height)
     {
         $this->height = (int) $height;  
-
         return $this;
     }
 
     public function setQuality($quality)
     {
         $this->quality = (int) $quality;
-
         return $this;
     }
 
     public function setX($x)
     {
     	$this->cropCordinates['x'] = $x;
+    	return $this;
     }
 
     public function setY($y)
     {
     	$this->cropCordinates['y'] = $y;
+    	return $this;
     }
 
     public function setMinWidth($minWidth)
+    {
+    	$this->minWidth = $minWidth;
+    	return $this;
+    }
+
+    public function setMinHeight($minHeight)
+    {
+    	$this->minHeight = $minHeight;
+    	return $this;
+    }
+
+    public function getMinWidth($minWidth)
     {
     	$this->minWidth = $minWidth;
     }
