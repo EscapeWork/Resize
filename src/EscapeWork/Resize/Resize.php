@@ -123,8 +123,6 @@ class Resize
     {
         $sizes = $sizeAjust->setOriginalWidth($this->originalWidth)
                   ->setOriginalHeight($this->originalHeight)
-                  ->setWidth($this->getWidth() )
-                  ->setHeight($this->getHeight())
                   ->ajust();
         
         $this->setWidth($sizes['width']);
@@ -141,10 +139,16 @@ class Resize
      */
     public function resize()
     {
-    	if (is_null($this->minWidth) || is_null($this->minHeight)) {
-        	$this->ajust(new SizeAjust());
+    	if (is_null($this->minWidth) && is_null($this->minHeight)) {
+        	$this->ajust(new SizeAjust(
+        		$this->getWidth(), 
+        		$this->getHeight()
+        	));
         } else {
-        	$this->ajust(new SizeAjustMinimum());
+        	$this->ajust(new SizeAjustMinimum(
+        		$this->getMinWidth(), 
+        		$this->getMinHeight(), 
+        	));
         }
 
         $this->execute();
@@ -162,9 +166,12 @@ class Resize
             'height' => $this->getHeight(), 
         );
 
-        $this->ajust(new SizeAjustCrop());
-        $this->execute();
+        $this->ajust(new SizeAjustCrop(
+        	$this->getWidth(), 
+    		$this->getHeight()
+        ));
 
+        $this->execute();
         $this->setCropCordinates($sizes);
 
         $this->setWidth($sizes['width']);

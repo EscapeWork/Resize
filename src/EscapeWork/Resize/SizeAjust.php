@@ -1,5 +1,7 @@
 <?php namespace EscapeWork\Resize;
 
+use Exception;
+
 class SizeAjust implements Ajustable
 {
 
@@ -10,51 +12,47 @@ class SizeAjust implements Ajustable
         $originalHeight;
 
 
-    public function __construct( $width = null, $height = null, $originalWidth = null, $originalHeight = null )
+    public function __construct($width = null, $height = null, $originalWidth = null, $originalHeight = null)
     {
-        if( !is_null( $width ) )
-        {
-            $this->setWidth( $width );
+        if (! is_null($width)) {
+            $this->setWidth($width);
         }
 
-        if( !is_null( $height ) )
-        {
-            $this->setHeight( $height );
+        if (! is_null($height)) {
+            $this->setHeight($height);
         }
 
-        if( !is_null( $originalWidth ) )
-        {
-            $this->setOriginalWidth( $originalWidth );
+        if (! is_null($originalWidth)) {
+            $this->setOriginalWidth($originalWidth);
         }
 
-        if( !is_null( $originalHeight ) )
-        {
-            $this->setOriginalHeight( $originalHeight );
+        if (! is_null($originalHeight)) {
+            $this->setOriginalHeight($originalHeight);
         }
     }
 
-    public function setWidth( $width )
+    public function setWidth($width)
     {
         $this->width = $width;
 
         return $this;
     }
 
-    public function setHeight( $height )
+    public function setHeight($height)
     {
         $this->height = $height;
 
         return $this;
     }
 
-    public function setOriginalWidth( $originalWidth )
+    public function setOriginalWidth($originalWidth)
     {
         $this->originalWidth = $originalWidth;
 
         return $this;
     }
 
-    public function setOriginalHeight( $originalHeight )
+    public function setOriginalHeight($originalHeight)
     {
         $this->originalHeight = $originalHeight;
 
@@ -83,21 +81,17 @@ class SizeAjust implements Ajustable
 
     public function ajust()
     {
-        if( $this->getOriginalWidth() === $this->getOriginalHeight() )
-        {
+        if ($this->getOriginalWidth() === $this->getOriginalHeight()) {
             return $this->ajustWidthEqualsHeight();
         }
-        elseif( $this->getOriginalWidth() > $this->getOriginalHeight() )
-        {
+        elseif ($this->getOriginalWidth() > $this->getOriginalHeight()) {
             return $this->ajustWidthHigherHeight();
         }
-        elseif( $this->getOriginalHeight() > $this->getOriginalWidth() )
-        {
+        elseif ($this->getOriginalHeight() > $this->getOriginalWidth()) {
             return $this->ajustHeightHigherWidth();
-        }
-        else
-        {
-            throw new \Exception('Unknow error, check data types');
+        } 
+        else {
+            throw new Exception('Unknow error, check data types');
         }
     }
 
@@ -108,22 +102,19 @@ class SizeAjust implements Ajustable
         $w       = $this->getOriginalWidth();
         $h       = $this->getOriginalHeight();
 
-        if( $w > $largura ) 
-        { 
-            $nw = $largura;  $nh = ($h * $largura) / $w; 
+        if ($w > $largura) { 
+            $nw = $largura; 
+            $nh = ($h * $largura) / $w; 
 
-            if( $nh > $altura ) 
-            { 
-                $nh = $altura; $nw = ($w * $altura)/$h; 
+            if ($nh > $altura) { 
+                $nh = $altura; 
+                $nw = ($w * $altura)/$h; 
             } 
-        } 
-        elseif( $h > $altura ) 
-        { 
-            $nh = $altura; $nw = ($w * $altura)/$h; 
-        } 
-        else 
-        { 
-                $nw = $w; $nh = $h; 
+        } elseif ($h > $altura) { 
+            $nh = $altura; 
+            $nw = ($w * $altura)/$h; 
+        } else { 
+            $nw = $w; $nh = $h; 
         }
 
         return array(
@@ -140,23 +131,18 @@ class SizeAjust implements Ajustable
         $w       = $this->getOriginalWidth();
         $h       = $this->getOriginalHeight();
 
-        if( $w > $largura ) 
-        { 
+        if ($w > $largura) { 
             $nw = $largura; 
             $nh = ($h * $largura) / $w; 
 
-            if( $nh > $altura ) 
-            { 
+            if ($nh > $altura) { 
                 $nh = $altura; 
                 $nw = ($w * $altura) / $h;
             } 
-        } 
-        else 
-        { 
+        } else { 
             $nw = $w; $nh = $h; 
 
-            if( $nh > $altura ) 
-            { 
+            if ($nh > $altura) { 
                 $nh = $altura; 
                 $nw = ($w * $altura) / $h; 
             } 
@@ -175,22 +161,20 @@ class SizeAjust implements Ajustable
         $w       = $this->getOriginalWidth();
         $h       = $this->getOriginalHeight();
 
-        if( $h > $altura ) 
-        { 
-            $nh = $altura; $nw = ($w * $altura) / $h; 
+        if ($h > $altura) { 
+            $nh = $altura; 
+            $nw = ($w * $altura) / $h; 
 
-            if( $nw > $largura ) 
-            { 
-                $nw = $largura; $nh = ($h * $largura) / $w; 
+            if ($nw > $largura) { 
+                $nw = $largura; 
+                $nh = ($h * $largura) / $w; 
             } 
-        } 
-        else 
-        { 
+        } else { 
             $nh = $h; $nw = $w; 
 
-            if( $nw > $largura ) 
-            { 
-                $nw = $largura; $nh = ($h * $largura) / $w; 
+            if ($nw > $largura) { 
+                $nw = $largura; 
+                $nh = ($h * $largura) / $w; 
             }
         }
 
