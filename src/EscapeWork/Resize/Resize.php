@@ -1,36 +1,38 @@
-<?php namespace EscapeWork\Resize;
+<?php
+
+namespace EscapeWork\Resize;
 
 use Imagine\Gd\Imagine;
 use Imagine\Image\Box;
 use Imagine\Image\Point;
+use Imagine\Image\Palette\RGB;
 
 class Resize
 {
-
     /**
      * Object variables
      */
     public
-        $picture, 
-        $cropCordinates = array(), 
-        $quality = 100;
+        $picture,
+        $cropCordinates = array(),
+        $quality = 80;
 
     /**
      * Sizes
      */
-    protected 
-    	$width  = 640, 
-        $height = 480, 
-        $originalWidth, 
-        $originalHeight, 
-        $minWidth, 
+    protected
+    	$width  = 640,
+        $height = 480,
+        $originalWidth,
+        $originalHeight,
+        $minWidth,
         $minHeight;
 
     /**
-     * Accepted images 
+     * Accepted images
      */
     protected $acceptedImages = array('image/jpg', 'image/jpeg', 'image/pjpg', 'image/pjpeg', 'image/png');
-    
+
     public function __construct($picture, $width = null, $height = null)
     {
         $this->setPicture($picture);
@@ -44,8 +46,8 @@ class Resize
             $this->setHeight($height);
         }
     }
-    
-    public function setPicture($picture) 
+
+    public function setPicture($picture)
     {
         $this->picture = $picture;
         return $this;
@@ -59,7 +61,7 @@ class Resize
 
     public function setHeight($height)
     {
-        $this->height = (int) $height;  
+        $this->height = (int) $height;
         return $this;
     }
 
@@ -107,7 +109,7 @@ class Resize
     {
         return $this->picture;
     }
-    
+
     public function getWidth()
     {
         return $this->width;
@@ -122,41 +124,41 @@ class Resize
     {
         return $this->quality;
     }
-    
+
     /**
      * Ajustando o tamanho da imagem para não distorcer
      *
      * @access private
      * @return void
-     */ 
+     */
     private function ajust(Ajustable $sizeAjust)
     {
         $sizes = $sizeAjust->setOriginalWidth($this->originalWidth)
                   ->setOriginalHeight($this->originalHeight)
                   ->ajust();
-        
+
         $this->setWidth($sizes['width']);
         $this->setHeight($sizes['height']);
 
         return $this;
     }
-    
+
     /**
      * Fazendo o redimensionamento e salvando (proporcional)
      *
-     * @access public 
+     * @access public
      * @return void
      */
     public function resize()
     {
     	if (is_null($this->minWidth) && is_null($this->minHeight)) {
         	$this->ajust(new SizeAjust(
-        		$this->getWidth(), 
+        		$this->getWidth(),
         		$this->getHeight()
         	));
         } else {
         	$this->ajust(new SizeAjustMinimum(
-        		$this->getMinWidth(), 
+        		$this->getMinWidth(),
         		$this->getMinHeight()
         	));
         }
@@ -165,19 +167,19 @@ class Resize
     }
 
     /**
-     * Cropando a imagem 
-     * 
-     * @return void 
+     * Cropando a imagem
+     *
+     * @return void
      */
     public function crop()
     {
         $sizes = array(
-            'width'  => $this->getWidth(), 
-            'height' => $this->getHeight(), 
+            'width'  => $this->getWidth(),
+            'height' => $this->getHeight(),
         );
 
         $this->ajust(new SizeAjustCrop(
-        	$this->getWidth(), 
+        	$this->getWidth(),
     		$this->getHeight()
         ));
 
@@ -191,9 +193,9 @@ class Resize
     }
 
     /**
-     * Setando as cordenadas do crop para deixar a imagem do tamanho exato 
+     * Setando as cordenadas do crop para deixar a imagem do tamanho exato
      *
-     * @access  public 
+     * @access  public
      * @param   array  $sizes
      * @return  void
      */
@@ -232,18 +234,18 @@ class Resize
     }
 
     /**
-     * Cropando a imagem 
+     * Cropando a imagem
      *
-     * @access  private 
+     * @access  private
      * @return  void
      */
     private function cropImage()
     {
         $imagine = new Imagine();
         $imagine->open($this->getPicture())
-                ->crop( 
-                    new Point( $this->cropCordinates['x'], $this->cropCordinates['y'] ), 
-                    new Box( $this->getWidth(), $this->getHeight() ) 
+                ->crop(
+                    new Point( $this->cropCordinates['x'], $this->cropCordinates['y'] ),
+                    new Box( $this->getWidth(), $this->getHeight() )
                 )
                 ->save( $this->getPicture(), array(
                     'quality' => $this->getQuality()
@@ -260,9 +262,11 @@ class Resize
     {
         $imagine = new Imagine();
         $imagine->open($this->getPicture())
+                ->usePalette(new RGB())
                 ->resize(new Box($this->getWidth(), $this->getHeight()))
                 ->save($this->getPicture(), array(
-                    'quality' => $this->getQuality()
+                    'jpeg_quality' => $this->getQuality(),
+                    'png_compression_level' => '6',
                 ));
     }
 
@@ -284,12 +288,12 @@ class Resize
     }
 
     /**
-     * Fazendo upload e redimensionando imagens a partir de uma fixa e um array de tamanhos 
-     * 
+     * Fazendo upload e redimensionando imagens a partir de uma fixa e um array de tamanhos
+     *
      * @param  string  $directory [diretório da imagem original]
      * @param  string  $img       [nome da imagem original]
      * @param  array   $sizes     [array com os tamanhos e prefixos para redimensionamentos]
-     * @return boolean 
+     * @return boolean
      */
     public static function make($directory, $img, array $sizes)
     {
@@ -297,9 +301,9 @@ class Resize
             try {
                 $newImg = $directory . $prefix . $img;
 
-                $upload = new Upload( 
-                    $directory . $img, 
-                    $newImg  
+                $upload = new Upload(
+                    $directory . $img,
+                    $newImg
                 );
 
                 $resize = new Resize($newImg, $size['width'], $size['height']);
@@ -309,7 +313,7 @@ class Resize
                 } else {
                     $resize->resize();
                 }
-            } 
+            }
             catch(UploadException $e) {
 
             }
@@ -323,7 +327,7 @@ class Resize
      * Helper function to format the name removing special characters, accents e white spaces
      *
      * @static
-     * @access  public 
+     * @access  public
      * @param   string $string
      * @return  string
      */
@@ -349,7 +353,7 @@ class Resize
         );
 
         $specials = array('/', '\\', '|', '*', ':', '[', ']', '{', '}', "'", '"', ',', '%', '@', '&', '(', ')', '¬', '#', '!', '?', 'ª', 'º', '¨', '°');
-        
+
         $string = str_replace($specials, '', $string);
         $string = preg_replace($accents, array_keys($accents), htmlentities($string, ENT_NOQUOTES, $encode));
 
