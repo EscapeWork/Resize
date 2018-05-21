@@ -1,5 +1,7 @@
 # EscapeWork\Resize [![Build Status](https://secure.travis-ci.org/EscapeWork/Resize.png)](http://travis-ci.org/EscapeWork/Resize) [![Latest Stable Version](https://poser.pugx.org/escapework/resize/v/stable.png)](https://packagist.org/packages/escapework/resize) [![Total Downloads](https://poser.pugx.org/escapework/resize/downloads.png)](https://packagist.org/packages/escapework/resize)
 
+**THIS LIBRARY IS NOT MANITAINED ANYMORE**
+
 Componente que faz uma abstração da library [Imagine](https://github.com/avalanche123/Imagine) para fazer manipulações com imagens.
 
 ### Exemplos 
